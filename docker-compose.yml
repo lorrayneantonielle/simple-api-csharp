@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  postgres-simple-api:
+    image: postgres:12.15
+    container_name: postgres-simple-api
+    environment:
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "postgres"
+    ports:
+      - "54321:5432"
+    networks:
+      - network-liquibase-postgres
+
+  liquibase:
+    image: liquibase/liquibase:4.23.1
+    container_name: liquibase-simple-api
+    depends_on:
+      - postgres-simple-api
+    volumes:
+      - ./database/changelog:/var/changelog
+    command: >
+      bash -c "liquibase --url=jdbc:postgresql://postgres-simple-api:5432/postgres --changelogFile=../../var/changelog/master.yaml --username=postgres --password=postgres update"
+    networks:
+      - network-liquibase-postgres
+
+networks: 
+  network-liquibase-postgres:
+    driver: bridge
