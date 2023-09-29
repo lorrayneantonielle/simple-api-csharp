@@ -1,0 +1,54 @@
+databaseChangeLog:
+- changeSet:
+    id: 01 - Criação da tabela de geração de usuários.
+    author: lorrayne.antonielle
+    changes:
+    
+    - createTable:
+        tableName: users
+        remarks: Tabela para controlar os usuários.
+        columns:
+        - column:
+            name: id
+            type: INT
+            autoIncrement: true
+            remarks: Chave primária da tabela de usuários.
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: id_pk
+        - column:
+            name: name
+            type: VARCHAR(100)
+            autoIncrement: false
+            remarks: Indica o nome do usuário.
+            constraints:
+              nullable: false
+        - column:
+            name: email
+            type: VARCHAR(100)
+            autoIncrement: false
+            remarks: Indica o email do usuário.
+            constraints:
+              nullable: false
+        - column:
+            name: ind_gerar_diarios
+            type: BOOL
+            remarks: Indica se os diários devem ser gerados ou não.
+            constraints:
+              nullable: false
+        - column:
+            name: qtd_reprocessamento
+            type: INT
+            remarks: Quantidade de tentativas de reprocessamento.
+            constraints:
+              nullable: true
+        - column:
+            name: cod_status_geracao
+            type: INT
+            remarks: Codigo do status da geração do diario.
+            constraints:
+              nullable: false
+              referencedTableName: status_geracao
+              referencedColumnNames: cod_status_geracao
+              foreignKeyName: cod_status_geracao_fk
